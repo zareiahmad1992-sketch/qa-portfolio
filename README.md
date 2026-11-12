@@ -8,7 +8,7 @@ built for practice testing. I picked it because anyone can log in and reproduce 
 in two minutes, so you don't have to take my word for any of it.
 
 Nothing in here comes from an employer. The bug reports about banking work I mention in
-interviews stay in interviews — that code and those systems aren't mine to publish.
+interviews stay in interviews that code and those systems aren't mine to publish.
 
 ## What's in here
 
@@ -49,9 +49,9 @@ pytest -v
 
 Two test files do different jobs:
 
-- `tests/test_flows.py` — the happy paths. Login, browse, sort, add to cart, check out.
+- `tests/test_flows.py` the happy paths. Login, browse, sort, add to cart, check out.
   These should all pass. If one fails, either the site changed or I broke something.
-- `tests/test_known_bugs.py` — the five bugs above, written as tests and marked `xfail`.
+- `tests/test_known_bugs.py` the five bugs above, written as tests and marked `xfail`.
   They fail because the bugs are real. When saucedemo fixes one, pytest will flag it as
   XPASS and I'll delete the test. That's the honest way to keep a known-bug list from
   rotting into a list of things that stopped being true.
