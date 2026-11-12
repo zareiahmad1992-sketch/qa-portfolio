@@ -1,45 +1,69 @@
-# "Price (low to high)" leaves the list in its original order
+# Sorting is broken for every option, and the dropdown snaps back to A-Z
 
 **Environment:** saucedemo.com, Chromium 158, desktop 1280×800
 **Account:** `problem_user` and `error_user`
-**Severity:** Medium — the control looks like it worked
-**Reproduced:** 4 out of 4 attempts on both accounts
+**Severity:** Medium. The control looks like it worked, so nobody retries it
+**Reproduced:** 5 out of 5 attempts on both accounts, all four options
 
 ## Steps
 
-1. Log in as `error_user` (or `problem_user`).
-2. On the inventory page, open the sort dropdown and choose **Price (low to high)**.
-3. Read the prices from top to bottom.
+1. Log in as `problem_user` (or `error_user`).
+2. On the inventory page, open the sort dropdown and choose **Name (Z to A)**.
+3. Look at the dropdown itself, then at the list.
 
 ## Expected
 
-Prices ascend: `$7.99, $9.99, $15.99, $15.99, $29.99, $49.99` — the same result
-`standard_user` gets.
+The dropdown keeps `za`, and the list reorders with `Test.allTheThings() T-Shirt (Red)` at the top.
+That is what `standard_user` gets with the same selection.
 
 ## Actual
 
-The list doesn't move: `$29.99, $9.99, $15.99, $49.99, $7.99, $15.99`.
+Two things go wrong at once:
 
-Nothing redraws, no spinner, no error. The dropdown itself changes to show the new
-selection, so the interface tells you the choice was accepted. It just never applies.
+1. **The dropdown reverts to `az`.** The choice does not stick. Whatever you pick, the
+   control reads `Name (A to Z)` again a moment later.
+2. **The list never reorders.** It stays in the original catalogue order.
 
-Name A–Z and Z–A behave correctly on the same accounts, so it's specific to the price sort.
+It happens on all four options, not just the price ones:
 
-**`error_user`, price low to high — unsorted**
-![Screenshot](../evidence/bug3-sort-broken-error-user.png)
+| Option chosen | Dropdown then shows | First product | Same as standard_user? |
+|---|---|---|---|
+| Name (A to Z) | `az` | Sauce Labs Backpack | yes, but this is the default anyway |
+| Name (Z to A) | `az` | Sauce Labs Backpack | **no** |
+| Price (low to high) | `az` | Sauce Labs Backpack | **no** |
+| Price (high to low) | `az` | Sauce Labs Backpack | **no** |
 
-**`standard_user`, same selection — sorted correctly**
-![Screenshot](../evidence/bug3-sort-working-standard-user.png)
+I confirmed the revert by reading the `value` of the select element after a two-second wait,
+not by looking at it: after choosing `za`, `document.querySelector('.product_sort_container').value`
+returns `az`.
+
+![problem_user after choosing Z to A, dropdown back on A to Z](../evidence/bug3-sort-problem.png)
+
+**`standard_user`, same selection, dropdown stays on Z to A and the list reorders**
+![standard_user after choosing Z to A](../evidence/bug3-sort-standard.png)
 
 ## Why it's easy to miss
 
-The control gives good feedback. The select box updates, the list looks like a list, and if
-you don't re-read the numbers you assume it sorted. Sorting six items is also something
-nobody double-checks, because it's the kind of thing that either works or is obviously
-broken — except here it's neither.
+The control gives good feedback at first. You click, the select opens, you pick an option, and
+it closes. The list looks like a list, six products with names and prices. If you do not
+re-read the dropdown afterwards, and you do not happen to know that `Onesie` should be first
+for price-low-to-high, nothing announces itself. Sorting is also the kind of feature nobody
+double-checks, because it either works or is obviously broken, and this is neither.
 
-## How I'd narrow it
+My first pass at this got it half right: I noticed the list was not sorting and wrote it up as
+a price-sort defect. Then I checked the select value and found the dropdown was reverting too,
+and that name sorting was broken as well. Worth remembering that the visible symptom was one
+step away from the actual behaviour.
 
-Compare against `standard_user` first to prove the expectation. Then check whether the
-sort fires at all — if the network or the state update happens but the DOM doesn't reorder,
-that's the component; if nothing fires, the handler isn't bound for these accounts.
+## How I would narrow it
+
+Compare against `standard_user` first to prove the expectation. Then check the select element's
+value before and after the change. If the value reverts, the component is resetting its own
+state, which is a different bug from a sort handler that runs and produces no reorder. Both
+are worth a look at the inventory component's state handling, but the first one points at the
+controlled select rather than at the sorting function.
+
+## What I did not test
+
+Whether the sort works on a hard page refresh, since I only tested the in-page change. Also
+whether it fails the same way on a mobile viewport.

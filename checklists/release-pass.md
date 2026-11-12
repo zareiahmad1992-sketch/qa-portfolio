@@ -1,6 +1,6 @@
 # Release pass checklist
 
-What I actually walk through before signing off a build. Short on purpose — a checklist
+What I actually walk through before signing off a build. Short on purpose. A checklist
 long enough to skip is worse than no checklist.
 
 ## Before I start
@@ -38,6 +38,6 @@ can't get out of the gate.
 ## Before I sign off
 
 - [ ] Every bug I filed has steps someone else could follow
-- [ ] Nothing open is worth blocking the release for — and if something is, I've said so
+- [ ] Nothing open is worth blocking the release for. If something is, I've said so
       in writing rather than in passing
 - [ ] I've told the team what I did **not** test

@@ -1,14 +1,10 @@
-# QA Portfolio — Ahmad Zarei
+# QA Portfolio: Ahmad Zarei
 
 I'm a QA engineer in Yerevan. Five years of testing, most of it manual, on web, Android
 and API products. This repo is where I keep work I can show publicly.
 
-Everything here was tested on [saucedemo.com](https://www.saucedemo.com), a public demo shop
-built for practice testing. I picked it because anyone can log in and reproduce what I found
-in two minutes, so you don't have to take my word for any of it.
-
-Nothing in here comes from an employer. The bug reports about banking work I mention in
-interviews stay in interviews that code and those systems aren't mine to publish.
+Everything here is on [saucedemo.com](https://www.saucedemo.com), a public practice shop, so
+you can reproduce any of it in a couple of minutes.
 
 ## What's in here
 
@@ -24,17 +20,21 @@ automation/      Playwright + pytest suite against the same site
 
 Short version, so you can decide if this is worth your time:
 
-| # | What breaks | Found as |
-|---|---|---|
-| 1 | Typing a last name puts it in the first name field | `problem_user` |
-| 2 | Every product shows the same broken-image placeholder | `problem_user` |
-| 3 | "Price (low to high)" doesn't sort anything | `problem_user`, `error_user` |
-| 4 | The Remove button on the product list does nothing | `error_user` |
-| 5 | Prices don't match the ones every other user sees | `visual_user` |
+| # | What breaks | Found as | Severity |
+|---|---|---|---|---|
+| 1 | Typing a last name puts it in the first name field, which blocks checkout completely | `problem_user` | Blocker |
+| 2 | Every product shows the same broken-image placeholder | `problem_user` | Medium |
+| 3 | Every sort option snaps the dropdown back to A-Z and never reorders | `problem_user`, `error_user` | Medium |
+| 4 | The Remove button on the product list does nothing | `error_user`, `problem_user` | High |
+| 5 | Prices don't match the ones every other user sees | `visual_user` | High |
 
 Bug 4 is my favourite. Remove fails on the product list but works fine from the cart page,
 which tells you something specific about where the handler is wired up. That contrast is
 the whole report.
+
+Bug 3 taught me to check the control as well as the result. My first pass said "price sort does
+not work". Then I read the select element's value and found it was reverting to A-Z after every
+choice, on all four options, which is a different bug with a different cause.
 
 ## The automation
 
@@ -42,16 +42,20 @@ Python, pytest, Playwright, page objects. It runs against the live site, so it n
 
 ```bash
 cd automation
+python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 playwright install chromium
-pytest -v
+pytest
 ```
+
+`automation/HOW_TO_RUN.md` has the longer version, including failure modes and the
+`--headed` flag if you want to watch it run.
 
 Two test files do different jobs:
 
-- `tests/test_flows.py` the happy paths. Login, browse, sort, add to cart, check out.
+- `tests/test_flows.py`: the happy paths. Login, browse, sort, add to cart, check out.
   These should all pass. If one fails, either the site changed or I broke something.
-- `tests/test_known_bugs.py` the five bugs above, written as tests and marked `xfail`.
+- `tests/test_known_bugs.py`: the five bugs above, written as tests and marked `xfail`.
   They fail because the bugs are real. When saucedemo fixes one, pytest will flag it as
   XPASS and I'll delete the test. That's the honest way to keep a known-bug list from
   rotting into a list of things that stopped being true.
@@ -68,4 +72,4 @@ just noise.
 
 ## Contact
 
-Ahmad Zarei — zarei.ahmad1992@gmail.com — [LinkedIn](https://www.linkedin.com/in/ahmad-zarei92)
+Ahmad Zarei | zarei.ahmad1992@gmail.com | [LinkedIn](https://www.linkedin.com/in/ahmad-zarei92)

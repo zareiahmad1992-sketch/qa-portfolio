@@ -9,7 +9,8 @@ class InventoryPage(BasePage):
         self.page.fill("#user-name", username)
         self.page.fill("#password", password)
         self.page.click("#login-button")
-        self.page.wait_for_selector(".inventory_list")
+        self.page.wait_for_url("**/inventory.html", timeout=10_000)
+        self.page.wait_for_selector(".inventory_list", state="visible", timeout=10_000)
         return self
 
     def sort_by(self, value):

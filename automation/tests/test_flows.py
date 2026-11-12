@@ -5,6 +5,7 @@ wrong, rather than one of the five defects I already know about.
 """
 
 import pytest
+from playwright.sync_api import expect
 
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
@@ -13,10 +14,10 @@ from pages.cart_page import CartPage
 
 def test_login_lands_on_the_product_list(page):
     login = LoginPage(page).open()
-    login.login("standard_user")
+    login.login_and_wait("standard_user")
 
-    assert page.locator(".inventory_list").is_visible()
-    assert page.title() == "Swag Labs"
+    expect(page.locator(".inventory_list")).to_be_visible()
+    expect(page).to_have_title("Swag Labs")
 
 
 def test_locked_out_account_is_refused_with_a_reason(page):
@@ -24,7 +25,7 @@ def test_locked_out_account_is_refused_with_a_reason(page):
     login.login("locked_out_user")
 
     assert "locked out" in login.error_message().lower()
-    assert page.locator(".inventory_list").count() == 0
+    expect(page.locator(".inventory_list")).to_have_count(0)
 
 
 def test_wrong_password_is_refused(page):

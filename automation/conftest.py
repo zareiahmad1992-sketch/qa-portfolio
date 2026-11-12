@@ -33,7 +33,8 @@ def login(page):
         page.fill("#user-name", username)
         page.fill("#password", PASSWORD)
         page.click("#login-button")
-        page.wait_for_selector(".inventory_list")
+        page.wait_for_url("**/inventory.html", timeout=10_000)
+        page.wait_for_selector(".inventory_list", state="visible", timeout=10_000)
         return page
 
     return _login

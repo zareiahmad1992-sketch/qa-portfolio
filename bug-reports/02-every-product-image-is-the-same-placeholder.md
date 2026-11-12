@@ -2,7 +2,7 @@
 
 **Environment:** saucedemo.com, Chromium 158, desktop 1280×800
 **Account:** `problem_user`
-**Severity:** Medium — the page looks broken and you can't tell products apart
+**Severity:** Medium. The page looks broken and you can't tell products apart
 **Reproduced:** 3 out of 3 attempts
 
 ## Steps
@@ -25,7 +25,7 @@ I checked this by reading the `src` attribute of each image and its `naturalWidt
 
 ```
 problem_user : 6 × /assets/sl-404-Cq1a9k9X.jpg (600px)
-standard_user: 6 different files — sauce-backpack, bike-light, bolt-shirt, ...
+standard_user: 6 different files (sauce-backpack, bike-light, bolt-shirt, ...)
 ```
 
 ![Screenshot](../evidence/bug2-all-images-same-404.png)

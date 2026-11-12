@@ -1,4 +1,4 @@
-# Test plan — checkout flow
+# Test plan: checkout flow
 
 Written before I ran a single test on it. I'm keeping it in that state, because the plan I
 write up front is a different, more useful document than the one I'd write afterwards with
@@ -20,7 +20,7 @@ properly and not just clicked through at the end of a sprint.
 
 **1. The happy path, end to end.**
 One item, correct details, finish. Check the confirmation text and that the cart is empty
-afterwards. This is the baseline — if this doesn't work, nothing else matters.
+afterwards. This is the baseline. If this doesn't work, nothing else matters.
 
 **2. Each field, on its own.**
 Leave First Name empty and continue. Then Last Name. Then Postal Code. Each one should
@@ -30,10 +30,10 @@ see that something red appeared.
 **3. Values that are accepted versus rejected.**
 Postal code with letters in it. A name with an apostrophe (O'Brien) or a hyphen. A single
 space in each field. I don't know yet what this app considers valid, so I'm going in
-without assuming — whatever it does, I want to know whether it does it *consistently*.
+without assuming. Whatever it does, I want to know whether it does it *consistently*.
 
 **4. What the field actually keeps.**
-Fill all three fields, then go back and read them. Not what I typed — what's still in the
+Fill all three fields, then go back and read them. Not what I typed, but what's still in the
 boxes. On the payment and checkout forms I've tested at work, this is where things quietly
 go wrong.
 
@@ -67,11 +67,11 @@ correct one.
 
 One file per bug, in the format I'd use in Jira: steps, expected, actual, how I reproduced
 it. Screenshot attached where the words aren't enough. If I can't reproduce something twice,
-I write down that I saw it once and say I couldn't repeat it — an unreproduced bug is still
+I write down that I saw it once and say I couldn't repeat it. An unreproduced bug is still
 information, it's just weaker information.
 
 ## What I expect to miss
 
 Mobile entirely. Anything that only happens under real payment load. And any defect whose
-symptom is "this number is wrong" — those only turn up if you go and check the number,
+symptom is "this number is wrong". Those only turn up if you go and check the number,
 which is exactly why item 6 is in this plan.

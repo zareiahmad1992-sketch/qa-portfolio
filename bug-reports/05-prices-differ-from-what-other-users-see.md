@@ -2,7 +2,7 @@
 
 **Environment:** saucedemo.com, Chromium 158, desktop 1280×800
 **Account:** `visual_user`, compared against `standard_user`
-**Severity:** High — the number the customer sees is not the catalogue price
+**Severity:** High. The number the customer sees is not the catalogue price
 **Reproduced:** 3 out of 3 attempts
 
 ## Steps
@@ -30,7 +30,7 @@ Every price is different, and it changes again between sessions.
 | Test.allTheThings() T-Shirt (Red) | $15.99 | $89.47 |
 
 On a second run the `visual_user` column came back as `$69.85, $64.77, $28.84, $64.78,
-$42.46, $96.9` — same account, different numbers again.
+$42.46, $96.9`: same account, different numbers again.
 
 The Onesie is the one to look at closely: `$7.99` against `$68.93` is nearly nine times
 the price for the same item.
